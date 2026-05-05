@@ -1,0 +1,211 @@
+# ConfigMap：包含占位符的欢迎页模板
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: welcome-page-config
+  namespace: welcome-demo
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>k3s · nginx · argo</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                min-height: 100vh;
+                background: linear-gradient(145deg, #f8fafc 0%, #eef2f5 100%);
+                font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem;
+            }
+
+            .card {
+                max-width: 720px;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(0px);
+                border-radius: 2rem;
+                box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
+                padding: 3rem 2rem;
+                text-align: center;
+                transition: all 0.2s ease;
+                border: 1px solid rgba(148, 163, 184, 0.2);
+            }
+
+            @media (min-width: 640px) {
+                .card {
+                    padding: 3.5rem 3rem;
+                }
+            }
+
+            .badge-group {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem;
+                margin-bottom: 2rem;
+            }
+
+            .badge {
+                background: #ffffffcc;
+                backdrop-filter: blur(4px);
+                padding: 0.35rem 1rem;
+                border-radius: 40px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                letter-spacing: 0.01em;
+                color: #1e293b;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+                border: 0.5px solid rgba(100, 116, 139, 0.25);
+            }
+
+            .badge strong {
+                font-weight: 600;
+                color: #0f172a;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+                font-weight: 600;
+                background: linear-gradient(135deg, #1e293b, #2d3a4f);
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                margin-bottom: 1rem;
+                letter-spacing: -0.02em;
+            }
+
+            .highlight {
+                background: linear-gradient(120deg, #e9f5ff 0%, #e0f0fe 80%);
+                padding: 0 0.2rem;
+                border-radius: 8px;
+            }
+
+            .sub {
+                color: #334155;
+                font-size: 1rem;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+                border-left: 3px solid #3b82f6;
+                padding-left: 1rem;
+                text-align: left;
+                background: #f1f5f9;
+                border-radius: 0 12px 12px 0;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .stack-icons {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+                margin: 2rem 0 1.8rem;
+            }
+
+            .stack-item {
+                background: #ffffffd9;
+                backdrop-filter: blur(4px);
+                padding: 0.5rem 1.2rem;
+                border-radius: 60px;
+                font-weight: 500;
+                font-size: 1rem;
+                color: #0f172a;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+                border: 1px solid #e2e8f0;
+            }
+
+            .stack-item span {
+                font-weight: 600;
+                color: #1e40af;
+            }
+
+            .desc {
+                color: #334155;
+                margin: 1.5rem 0 1rem;
+                font-size: 0.95rem;
+            }
+
+            .gitops-tag {
+                margin-top: 2rem;
+                font-size: 0.8rem;
+                color: #5b6e8c;
+                background: #f1f5f9e6;
+                display: inline-block;
+                padding: 0.3rem 1rem;
+                border-radius: 40px;
+                letter-spacing: 0.3px;
+            }
+
+            hr {
+                border: none;
+                border-top: 1px solid #e2edf2;
+                margin: 1.5rem 0 1rem;
+                width: 60px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            footer {
+                font-size: 0.75rem;
+                color: #5b6e8c;
+                margin-top: 1rem;
+                line-height: 1.5;
+            }
+
+            .runtime-info {
+                margin-top: 0.5rem;
+                font-size: 0.7rem;
+                color: #6c7a91;
+                font-family: monospace;
+                background: #f8fafc;
+                display: inline-block;
+                padding: 0.2rem 0.8rem;
+                border-radius: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="badge-group">
+                <div class="badge"><strong>✨ GitOps</strong> · Argo CD</div>
+                <div class="badge"><strong>⚡ 轻量边缘</strong> · K3s</div>
+                <div class="badge"><strong>🚀 高并发</strong> · Nginx</div>
+            </div>
+            <h1>k3s <span style="font-weight:300">+</span> nginx <span style="font-weight:300">+</span> argo</h1>
+            <div class="sub">
+                🧊 极简 · 云原生欢迎页
+            </div>
+            <div class="stack-icons">
+                <div class="stack-item">🐳 <span>k3s</span></div>
+                <div class="stack-item">🌐 <span>nginx</span></div>
+                <div class="stack-item">🔄 <span>Argo CD</span></div>
+            </div>
+            <div class="desc">
+                由 <strong>K3s</strong> 集群驱动 · <strong>Nginx</strong> 提供服务 · <strong>Argo CD</strong> 持续交付<br>
+                极简风格，基于 GitOps 理念部署。
+            </div>
+            <hr>
+            <div class="gitops-tag">
+                🧬 声明式配置 | 自动同步 | 版本化欢迎页
+            </div>
+            <footer>
+                managed by Argo CD · running on k3s<br>
+                <div class="runtime-info">
+                    🖥️ Node: __NODE_NAME__ &nbsp;|&nbsp; 📦 Pod: __POD_NAME__
+                </div>
+            </footer>
+        </div>
+    </body>
+    </html>

@@ -16,6 +16,68 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.30-debian13
+        image: nginx:1.30
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: welcome-page
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "20m"
+          limits:
+            memory: "96Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5
+      volumes:
+      # ConfigMap 作为模板来源
+      - name: welcome-page-config
+        configMap:
+          name: welcome-page-config
+      # emptyDir 用于存放替换后的最终 HTML
+      - name: html-data
+        emptyDir: {}
+      initContainers:
+      - name: html-setup
+        image: nginx:stable-alpine3.20
+        command:
+        - sh
+        - -c
+        - |
+          cp /etc/nginx/html-config/index.html /html-data/index.html &&
+          sed -i "s/__POD_NAME__/$POD_NAME/g" /html-data/index.html &&
+          sed -i "s/__NODE_NAME__/$NODE_NAME/g" /html-data/index.html
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: html-data
+          mountPath: /html-data
+        - name: welcome-page-config
+          mountPath: /etc/nginx/html-config
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
