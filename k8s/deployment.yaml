@@ -21,7 +21,7 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: welcome-page
+        - name: html-data
           mountPath: /usr/share/nginx/html/index.html
           subPath: index.html
         resources:
@@ -53,7 +53,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: html-setup
-        image: nginx:stable-alpine3.20
+        image: nginx:1.30
         command:
         - sh
         - -c
